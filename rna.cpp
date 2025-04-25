@@ -59,7 +59,7 @@ int main() {
     // std::cout << "total(\"" << test1 << "\") = " << total(test1) << "\n";
     // std::cout << "total(\"" << test2 << "\") = " << total(test2) << "\n";
     //std::cout << "total(\"" << test3 << "\") = " << total(test3) << "\n";
-    std::cout << "total(\"" << test6 << "\") = " << total(test6) << "\n";
+    std::cout << "total(\"" << test3 << "\") = " << total(test3) << "\n";
 
     return 0;
 }

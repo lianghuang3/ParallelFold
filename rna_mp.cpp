@@ -33,12 +33,15 @@ long long total(const std::string &s) {
             int j = i + span;
             // Case 1: The base at i is unpaired.
             dp[i][j] = dp[i + 1][j];
+        }
 
+        #pragma omp parallel for schedule(dynamic)
+        for (int i = 0; i <= n - span; ++i) {
             // Case 2: Try to pair the base at i with a base at position k-1.
-            for (int k = i + 1; k <= j; ++k) {
+            for (int k = i + 1; k <= i+span; ++k) {
                 std::string pair = { s[i], s[k - 1] };
                 if (allowed.count(pair)) {
-                    dp[i][j] += dp[i + 1][k - 1] * dp[k][j];
+                    dp[i][i+span] += dp[i + 1][k - 1] * dp[k][i+span];
                 }
             }
         }
@@ -56,11 +59,12 @@ int main() {
     std::string test4 = "GCUAGGGAUAACAGGGUGCGACCUGCCAAGCUGCACAAUUCAAUGUGGUUAGAAAACCAACUUGGAAUCCAAUCUCCAUGAGCCUACCAUCACAUGCGUUCUAGGGUUAACCUGAAGGUGUGAAGCUGAUGGGAAAAAGUAACCCAAACUGUAUGUGACAGUGAGGGGGCAGGCUAGAUUCCUAUGGGCAAUGUAAAUGAACACUCAUCUGAGGCAUCGUGACCCUAUCACAUCUAGUUAAUUGUGAGAGAAUCUUAUGUCUCUGUUUCAUAAGAUUGAUUGGACAAUUUCUCACCGGUGUAAAGAGUGGUCCUAAGGGAAUCAUCGAAAGUGAAUUGUGCGGAACAGGGCAAGCCCCAUAGGCUCCUUCGGGAGUGAGCGAAGCAAUUCUCUCUAUCGCCUAGUGGGUAAAAGACAGGGCAAAAAGCGAAUGCCAGUUAGUAAUAGACUGGAUAGGGUGAAUAACCUAACCUGAAAGGGUGCAGACUUGCUCAUGGGCGUGGGAAAUCAGAUUUCGUGAAUACACCAGCAUUCAAGAGUUUCCAUGCUUGAGCCGUGUGCGGUGAAAGUCGCAUGCACGGUUCUACUGGGGGGAAAGCCUGAGAGGGCCUACCUAUCCAACUUU";
     // std::string test5 = "AGGCAUCAAACCCUGCAUGGGAGCGGAUGCCGUGUAGUCCAAAGACUUCUUUGGCACUAAGGCAUCAAACCCUGCAUGGGAGCGGAUGCCGUGUAGUCCAAAGACUUCUUUGGCACUAAGGCAUCAAACCCUGCAUGGGAGCGGAUGCCGUGUAGUCCAAAGACUUCUUUGGCACUAAGGCAUCAAACCCUGCAUGGGAGCGGAUGCCGUGUAGUCCAAAGACUUCUUUGGCACUAAGGCAUCAAACCCUGCAUGGGAGCGGAUGCCGUGUAGUCCAAAGACUUCUUUGGCACUAAGGCAUCAAACCCUGCAUGGGAGCGGAUGCCGUGUAGUCCAAAGACUUCUUUGGCACUAAGGCAUCAAACCCUGCAUGGGAGCGGAUGCCGUGUAGUCCAAAGACUUCUUUGGCACUAAGGCAUCAAACCCUGCAUGGGAGCGGAUGCCGUGUAGUCCAAAGACUUCUUUGGCACUA";
 
+    std::string test6 = test2 + test2 + test2;
 
     // std::cout << "total(\"" << test1 << "\") = " << total(test1) << "\n";
     // std::cout << "total(\"" << test2 << "\") = " << total(test2) << "\n";
+    //std::cout << "total(\"" << test3 << "\") = " << total(test3) << "\n";
     std::cout << "total(\"" << test3 << "\") = " << total(test3) << "\n";
-    std::cout << "total(\"" << test4 << "\") = " << total(test4) << "\n";
 
     return 0;
 }
